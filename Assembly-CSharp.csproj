@@ -49,7 +49,6 @@
      <Compile Include="Assets\Arcadia\Components\ArcadiaState.cs" />
      <Compile Include="Assets\Arcadia\Components\AwakeHook.cs" />
      <Compile Include="Assets\Arcadia\Components\FixedUpdateHook.cs" />
-     <Compile Include="Assets\Arcadia\Components\InvokeHook.cs" />
      <Compile Include="Assets\Arcadia\Components\LateUpdateHook.cs" />
      <Compile Include="Assets\Arcadia\Components\OnAnimatorIKHook.cs" />
      <Compile Include="Assets\Arcadia\Components\OnAnimatorMoveHook.cs" />

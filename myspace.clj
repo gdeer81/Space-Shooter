@@ -38,22 +38,38 @@
     (set! (.rotation rigid-body) (l/euler (l/v3 0.0 0.0 (* (* -1 tilt) (.x (.velocity rigid-body))))) )
     ))
 
-
 ;hook the moveplayer fn to the fixed update event
 (a/hook+ (a/object-named "player")  :fixed-update #'myspace/move-player)
 
 
 ;;lets give this guy a weapon
 (def next-fire-time (atom (Time/time)))
+(def firing-rate (atom 0.55))
 (defn fire-lazer [&args]
-  (let [fire-rate 0.25
-        now (Time/time)
+  (let [now (Time/time)
         shot-spawn (a/cmpt (a/object-named "player") Transform)
         ]
     (when (and (Input/GetButton "Fire1")
-               (> now @next-fire-time))
-      (a/log "Bang Bang!")))
-  )
+               (> now (deref next-fire-time)))
+      (let [bolt (a/instantiate (UnityEngine.Resources/Load "Bolt") (.position (.transform (a/object-named "Shot Spawn"))))
+      rb (a/cmpt bolt Rigidbody)
+            new-velocity (l/v3* (.forward (a/cmpt bolt Transform)) 20)
+            _ (swap! next-fire-time + @firing-rate)
+      ]
+        (set! (.velocity rb) new-velocity )))))
 
 ;;hook the weapon up to the player
 (a/hook+ (a/object-named "player")  :update #'myspace/fire-lazer)
+
+(defn say [& _] (a/log "Oh Helloo..."))
+
+(let [bolt (a/instantiate (UnityEngine.Resources/Load "Bolt") (.position (.transform (a/object-named "Shot Spawn"))))
+      rb (a/cmpt bolt Rigidbody)
+      new-velocity (l/v3* (.forward (a/cmpt bolt Transform)) 20)
+      ]
+    (set! (.velocity rb) new-velocity ))
+(mapv a/destroy (a/objects-named #"Bolt*"))
+(+ 1 1)
+(a/hook+
+ (a/instantiate (UnityEngine.Resources/Load "Bolt") (.position (.transform (a/object-named "Shot Spawn")))) :start  )
+(a/hook+  (a/objects-named  #".*Bolt.*") :start #'myspace/say)
