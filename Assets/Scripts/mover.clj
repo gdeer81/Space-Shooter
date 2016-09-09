@@ -1,5 +1,6 @@
-(ns mover (:require [arcadia.core :as c]))
+(ns mover (:require [arcadia.core :as a]
+                      [arcadia.linear :as l])
+    (:import UnityEngine.Rigidbody)
+    (:import UnityEngine.Transform))
 
-(c/log "--------------in mover ns---------------")
-
-(defn player-log [o] (c/log "doing stuff to player"))
+(a/log "--------------mover namespace loaded---------------")
